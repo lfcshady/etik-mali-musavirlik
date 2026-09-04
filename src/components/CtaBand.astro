@@ -1,5 +1,7 @@
 ---
+import Figure from './Figure.astro';
 import { site, telHref, mailHref, waHref } from '../data/site';
+import ctaImg from '../assets/skyline-up.jpg';
 
 interface Props {
   title?: string;
@@ -11,48 +13,53 @@ const {
 } = Astro.props;
 ---
 
-<section class="shell" aria-labelledby="cta-baslik">
-  <div class="border-t border-line pt-14 md:pt-20" data-reveal-group>
-    <div class="grid gap-10 md:grid-cols-12 md:gap-8">
-      <div class="md:col-span-7">
-        <p class="eyebrow" data-reveal>İletişim</p>
-        <h2
-          id="cta-baslik"
-          class="mt-5 text-[2rem] md:text-[2.75rem] lg:text-[3rem]"
-          data-reveal
-        >
-          {title}
-        </h2>
-        <p class="mt-6 max-w-[52ch] text-[1.0625rem] leading-relaxed text-ink-2" data-reveal>
-          {text}
-        </p>
-        <div class="mt-9 flex flex-wrap gap-3" data-reveal>
-          <a href="/iletisim" class="btn">Görüşme talep edin</a>
-          <a
-            href={waHref('Merhaba, mali müşavirlik hizmetleriniz hakkında bilgi almak istiyorum.')}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-ghost">WhatsApp’tan yazın</a
-          >
-        </div>
-      </div>
+<section class="relative overflow-hidden bg-navy py-20 text-paper md:py-28" aria-labelledby="cta-baslik">
+  <Figure
+    src={ctaImg}
+    alt="Aşağıdan yukarı bakan açıyla iş merkezi kuleleri"
+    width={2000}
+    reveal={false}
+    class="absolute inset-0 h-full w-full opacity-40"
+  />
+  <div class="absolute inset-0 bg-gradient-to-br from-navy via-navy/92 to-navy/55"></div>
 
-      <div class="md:col-span-4 md:col-start-9" data-reveal>
-        <dl class="divide-y divide-line border-y border-line">
-          <div class="py-4">
-            <dt class="eyebrow">Telefon</dt>
-            <dd class="mt-1.5"><a href={telHref} class="link-draw font-mono text-[1.0625rem]">{site.phoneDisplay}</a></dd>
-          </div>
-          <div class="py-4">
-            <dt class="eyebrow">E-posta</dt>
-            <dd class="mt-1.5"><a href={mailHref} class="link-draw text-[1.0625rem]">{site.email}</a></dd>
-          </div>
-          <div class="py-4">
-            <dt class="eyebrow">Çalışma saatleri</dt>
-            <dd class="mt-1.5 text-[1.0625rem] tnum">Pzt–Cum 09:00–18:30</dd>
-          </div>
-        </dl>
+  <div class="shell relative z-10 grid gap-12 md:grid-cols-12 md:gap-8" data-reveal-group>
+    <div class="md:col-span-6">
+      <p class="eyebrow eyebrow-invert" data-reveal>İletişim</p>
+      <h2 id="cta-baslik" class="mt-5 max-w-[14ch] text-[2.5rem] md:text-[3.5rem]" data-reveal>
+        {title}
+      </h2>
+      <p class="mt-7 max-w-[50ch] text-[1.0625rem] leading-relaxed text-paper/75" data-reveal>
+        {text}
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3" data-reveal>
+        <a href="/iletisim" class="btn btn-light">Görüşme talep edin</a>
+        <a
+          href={waHref('Merhaba, mali müşavirlik hizmetleriniz hakkında bilgi almak istiyorum.')}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost btn-ghost-invert">WhatsApp’tan yazın</a
+        >
       </div>
+    </div>
+
+    <div class="md:col-span-5 md:col-start-8" data-reveal>
+      <dl class="divide-y divide-line-invert border-y border-line-invert">
+        <div class="py-5">
+          <dt class="text-[0.8125rem] text-paper/55">Telefon</dt>
+          <dd class="mt-1.5">
+            <a href={telHref} class="link-draw font-display text-[1.375rem] tnum">{site.phoneDisplay}</a>
+          </dd>
+        </div>
+        <div class="py-5">
+          <dt class="text-[0.8125rem] text-paper/55">E-posta</dt>
+          <dd class="mt-1.5"><a href={mailHref} class="link-draw text-[1.0625rem]">{site.email}</a></dd>
+        </div>
+        <div class="py-5">
+          <dt class="text-[0.8125rem] text-paper/55">Çalışma saatleri</dt>
+          <dd class="mt-1.5 text-[1.0625rem] tnum">Pzt–Cum 09:00–18:30</dd>
+        </div>
+      </dl>
     </div>
   </div>
 </section>

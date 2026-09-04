@@ -1,9 +1,11 @@
 ---
 import Mark from './Mark.astro';
-import { site, nav, telHref } from '../data/site';
+import TaslakBar from './TaslakBar.astro';
+import { site, nav, telHref, taslak } from '../data/site';
 
 interface Props {
-  variant?: 'default' | 'flush';
+  /** 'overlay' lays the header over a full-bleed hero until the user scrolls. */
+  variant?: 'default' | 'overlay';
 }
 const { variant = 'default' } = Astro.props;
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -11,28 +13,37 @@ const isActive = (href: string) => current === href || current.startsWith(href +
 ---
 
 <header
+  id="site-header"
+  data-variant={variant}
   class:list={[
-    'sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur-md',
-    variant === 'flush' && 'border-b-0',
+    variant === 'overlay' ? 'fixed inset-x-0 top-0 z-50' : 'sticky top-0 z-50',
+    'transition-colors duration-500',
+    variant === 'overlay'
+      ? 'text-paper [&.is-stuck]:bg-paper/95 [&.is-stuck]:text-ink [&.is-stuck]:shadow-[0_1px_0_var(--color-line)] [&.is-stuck]:backdrop-blur-md'
+      : 'bg-paper/95 text-ink shadow-[0_1px_0_var(--color-line)] backdrop-blur-md',
   ]}
 >
-  <div class="shell flex h-16 items-center justify-between gap-6 md:h-20">
-    <a href="/" class="flex items-center gap-3 text-ink" aria-label={`${site.name} — ana sayfa`}>
-      <Mark class="h-6 w-6 text-accent md:h-7 md:w-7" />
+  {taslak && <TaslakBar />}
+
+  <div class="shell flex h-[4.5rem] items-center justify-between gap-6 md:h-20">
+    <a href="/" class="flex items-center gap-3" aria-label={`${site.name} — ana sayfa`}>
+      <Mark class="h-7 w-7" />
       <span class="flex flex-col leading-none">
-        <span class="font-display text-[1.35rem] tracking-tight md:text-[1.5rem]">Etik</span>
-        <span class="eyebrow mt-0.5 text-[0.5625rem] md:text-[0.625rem]">Mali Müşavirlik</span>
+        <span class="font-display text-[1.375rem] tracking-tight">Etik</span>
+        <span class="mt-1 text-[0.5625rem] font-semibold uppercase tracking-[0.2em] opacity-70"
+          >Mali Müşavirlik</span
+        >
       </span>
     </a>
 
-    <nav aria-label="Ana menü" class="hidden items-center gap-7 lg:flex">
+    <nav aria-label="Ana menü" class="hidden items-center gap-8 lg:flex">
       {
         nav.map((item) => (
           <a
             href={item.href}
             class:list={[
-              'link-draw py-1 text-[0.9375rem]',
-              isActive(item.href) ? 'text-accent' : 'text-ink-2 hover:text-ink',
+              'link-draw py-1 text-[0.9375rem] font-medium',
+              isActive(item.href) ? 'opacity-100' : 'opacity-75 hover:opacity-100',
             ]}
             aria-current={isActive(item.href) ? 'page' : undefined}
           >
@@ -43,9 +54,7 @@ const isActive = (href: string) => current === href || current.startsWith(href +
     </nav>
 
     <div class="flex items-center gap-4">
-      <a
-        href={telHref}
-        class="hidden font-mono text-[0.8125rem] tracking-tight text-ink-2 link-draw md:inline"
+      <a href={telHref} class="link-draw hidden text-[0.9375rem] font-medium tnum md:inline"
         >{site.phoneDisplay}</a
       >
       <a href="/iletisim" class="btn hidden md:inline-flex">Görüşme talep edin</a>
@@ -53,7 +62,7 @@ const isActive = (href: string) => current === href || current.startsWith(href +
       <button
         type="button"
         id="menu-toggle"
-        class="flex h-10 w-10 items-center justify-center border border-line lg:hidden"
+        class="flex h-11 w-11 items-center justify-center border border-current/25 lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
@@ -65,31 +74,43 @@ const isActive = (href: string) => current === href || current.startsWith(href +
     </div>
   </div>
 
-  <div id="mobile-menu" hidden class="border-t border-line bg-paper lg:hidden">
+  <div id="mobile-menu" hidden class="bg-paper text-ink shadow-[0_1px_0_var(--color-line)] lg:hidden">
     <nav aria-label="Mobil menü" class="shell flex flex-col py-2">
       {
         nav.map((item) => (
-          <a href={item.href} class="border-b border-line-soft py-3.5 text-[1.0625rem]">
+          <a href={item.href} class="border-b border-line-soft py-4 text-[1.0625rem] font-medium">
             {item.label}
           </a>
         ))
       }
       <div class="flex flex-col gap-3 py-5">
         <a href="/iletisim" class="btn justify-center">Görüşme talep edin</a>
-        <a href={telHref} class="btn-ghost justify-center font-mono text-[0.875rem]">
-          {site.phoneDisplay}
-        </a>
+        <a href={telHref} class="btn-ghost justify-center tnum">{site.phoneDisplay}</a>
       </div>
     </nav>
   </div>
 </header>
 
+
 <script>
+  const header = document.getElementById('site-header');
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
+
   toggle?.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
     if (menu) menu.hidden = open;
+    // An open menu always needs the solid background, whatever the scroll position.
+    if (header?.dataset.variant === 'overlay') header.classList.toggle('is-stuck', !open || window.scrollY > 40);
   });
+
+  if (header?.dataset.variant === 'overlay') {
+    const sync = () => {
+      const menuOpen = toggle?.getAttribute('aria-expanded') === 'true';
+      header.classList.toggle('is-stuck', window.scrollY > 40 || !!menuOpen);
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+  }
 </script>

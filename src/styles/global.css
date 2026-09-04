@@ -3,27 +3,30 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens — Etik Mali Müşavirlik
-   Paper ground, ink text, one deep blue accent used at low frequency.
+   Deep navy ground, warm paper, one live blue accent. Photography is graded into
+   a single navy duotone so a set of separately-sourced images reads as one brand
+   system rather than a stock library.
    Never hardcode a hex in a component; if a colour is missing, add it here.
    --------------------------------------------------------------------------- */
 @theme {
-  --color-paper: #f7f5f0;
-  --color-paper-2: #f1eee7;
-  --color-card: #fdfcfa;
-  --color-ink: #16181c;
-  --color-ink-2: #3a4048;
-  --color-muted: #5f666e;
-  --color-accent: #1b3a5c;
-  --color-accent-soft: #e6ecf2;
-  --color-deep: #12151a;
-  --color-deep-2: #1b1f26;
-  --color-line: rgb(22 24 28 / 0.13);
-  --color-line-soft: rgb(22 24 28 / 0.07);
-  --color-line-invert: rgb(247 245 240 / 0.16);
+  --color-navy: #0b1f30;
+  --color-navy-2: #12314a;
+  --color-navy-3: #1c4a6b;
+  --color-paper: #f5f3ef;
+  --color-paper-2: #eae5dd;
+  --color-surface: #ffffff;
+  --color-ink: #0b1f30;
+  --color-ink-2: #2b4256;
+  --color-muted: #5f7181;
+  --color-accent: #17618f;
+  --color-accent-2: #7fb6dc;
+  --color-sand: #ded6c8;
+  --color-line: rgb(11 31 48 / 0.14);
+  --color-line-soft: rgb(11 31 48 / 0.07);
+  --color-line-invert: rgb(245 243 239 / 0.18);
 
-  --font-display: 'Newsreader', 'Iowan Old Style', Georgia, serif;
-  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -39,16 +42,15 @@
     color: var(--color-ink);
     font-family: var(--font-body);
     font-size: 16px;
-    line-height: 1.65;
-    font-feature-settings: 'kern', 'liga';
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 350;
-    letter-spacing: -0.015em;
-    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
     text-wrap: balance;
   }
 
@@ -65,38 +67,148 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 1px;
+    border-radius: 2px;
   }
 
-  a {
-    color: inherit;
-  }
-
-  input, select, button {
-    font: inherit;
-    color: inherit;
-  }
+  a { color: inherit; }
+  input, select, button, textarea { font: inherit; color: inherit; }
+  img { display: block; }
 }
 
 @layer components {
   .shell {
     margin-inline: auto;
     width: 100%;
-    max-width: 1240px;
+    max-width: 1280px;
     padding-inline: 1.25rem;
   }
   @media (min-width: 768px) {
     .shell { padding-inline: 2.5rem; }
   }
 
-  /* Small uppercase mono label. The device that makes the page read as
-     documented rather than decorated. */
+  /* Small uppercase label. Sits above every section heading. */
   .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: var(--color-accent);
+  }
+  .eyebrow-invert { color: var(--color-accent-2); }
+
+  /* --- Image treatment ----------------------------------------------------
+     One grade for every photograph on the site: desaturated, contrast lifted,
+     navy multiplied over the top. Separately-sourced images end up looking
+     commissioned instead of collected. */
+  .duotone {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-navy);
+    isolation: isolate;
+  }
+  .duotone > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08) brightness(0.95);
+  }
+  .duotone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(200deg, #17618f 0%, #0b1f30 85%);
+    mix-blend-mode: color;
+    opacity: 0.92;
+    pointer-events: none;
+  }
+  /* Legibility scrim for text sitting on an image. */
+  .scrim::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      to top,
+      rgb(11 31 48 / 0.92) 0%,
+      rgb(11 31 48 / 0.7) 42%,
+      rgb(11 31 48 / 0.35) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Page headers put their text over the top half of the image, where the
+     bottom-weighted scrim above is weakest. This one is even and darker. */
+  .scrim-even::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      to bottom,
+      rgb(11 31 48 / 0.86) 0%,
+      rgb(11 31 48 / 0.78) 55%,
+      rgb(11 31 48 / 0.86) 100%
+    );
+    pointer-events: none;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.9375rem 1.625rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    border: 1px solid var(--color-accent);
+    transition: background-color 0.35s var(--ease-out-expo),
+                border-color 0.35s var(--ease-out-expo),
+                transform 0.35s var(--ease-out-expo);
+  }
+  .btn:hover {
+    background: var(--color-navy);
+    border-color: var(--color-navy);
+    transform: translateY(-2px);
+  }
+
+  .btn-light {
+    background: #fff;
+    color: var(--color-navy);
+    border-color: #fff;
+  }
+  .btn-light:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.9375rem 1.625rem;
+    border: 1px solid var(--color-line);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: border-color 0.35s var(--ease-out-expo),
+                background-color 0.35s var(--ease-out-expo),
+                transform 0.35s var(--ease-out-expo);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-navy);
+    background: var(--color-surface);
+    transform: translateY(-2px);
+  }
+  .btn-ghost-invert {
+    border-color: var(--color-line-invert);
+    color: var(--color-paper);
+  }
+  .btn-ghost-invert:hover {
+    border-color: var(--color-paper);
+    background: rgb(245 243 239 / 0.08);
   }
 
   .rule {
@@ -105,84 +217,47 @@
     transform-origin: left;
   }
 
-  /* Underline that draws in on hover — used instead of buttons for text links. */
+  .prose-tr p {
+    max-width: 62ch;
+    color: var(--color-ink-2);
+  }
+
   .link-draw {
     background-image: linear-gradient(currentColor, currentColor);
-    background-size: 0% 1px;
+    background-size: 0% 1.5px;
     background-repeat: no-repeat;
     background-position: left 100%;
     transition: background-size 0.4s var(--ease-out-expo);
   }
   .link-draw:hover,
   .link-draw:focus-visible {
-    background-size: 100% 1px;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.8125rem 1.375rem;
-    background: var(--color-accent);
-    color: var(--color-paper);
-    font-size: 0.875rem;
-    letter-spacing: 0.01em;
-    border: 1px solid var(--color-accent);
-    transition: background-color 0.35s var(--ease-out-expo),
-                color 0.35s var(--ease-out-expo);
-  }
-  .btn:hover {
-    background: transparent;
-    color: var(--color-accent);
-  }
-
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.8125rem 1.375rem;
-    border: 1px solid var(--color-line);
-    font-size: 0.875rem;
-    transition: border-color 0.35s var(--ease-out-expo),
-                background-color 0.35s var(--ease-out-expo);
-  }
-  .btn-ghost:hover {
-    border-color: var(--color-ink);
-    background: var(--color-paper-2);
-  }
-
-  .prose-tr p {
-    max-width: 62ch;
-    color: var(--color-ink-2);
-  }
-  .prose-tr p + p {
-    margin-top: 1.1em;
+    background-size: 100% 1.5px;
   }
 }
 
 /* ---------------------------------------------------------------------------
-   Reveal — elements start hidden only when JS is present, so the page is fully
-   readable without it (and for crawlers).
+   Reveal — elements start hidden only when JS is present, so the page stays
+   fully readable without it.
    --------------------------------------------------------------------------- */
-[data-reveal] {
-  opacity: 1;
-}
 html.js [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(18px);
+}
+html.js [data-img-reveal] {
+  clip-path: inset(0 0 100% 0);
 }
 html.js [data-rule-draw] {
   transform: scaleX(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
   html.js [data-reveal],
+  html.js [data-img-reveal],
   html.js [data-rule-draw] {
     opacity: 1 !important;
     transform: none !important;
+    clip-path: none !important;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Workspace material, never part of the client repo (_shared/taslak-mode.md §6)
+DEMO.md

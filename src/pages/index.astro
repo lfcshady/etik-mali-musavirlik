@@ -1,11 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
+import Figure from '../components/Figure.astro';
 import ServiceIndex from '../components/ServiceIndex.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../data/site';
 import { team } from '../data/team';
 import { activeRates } from '../data/rates';
+
+import heroImg from '../assets/hero-tower.jpg';
+import facadeImg from '../assets/facade-diagonal.jpg';
+import towerImg from '../assets/tower-mono.jpg';
+import gridImg from '../assets/facade-grid.jpg';
 
 const principles = [
   {
@@ -42,116 +48,152 @@ const minWage = activeRates.minWageGross.toLocaleString('tr-TR', {
   title="Etik Mali Müşavirlik — İstanbul SMMM Bürosu"
   description="İstanbul Şişli’de serbest muhasebeci mali müşavirlik bürosu. Muhasebe, bordro, vergi danışmanlığı, e-ticaret muhasebesi ve teşvik başvuruları. İlk görüşme ücretsiz."
   path="/"
-  headerVariant="flush"
+  headerVariant="overlay"
 >
-  <!-- Hero -->
-  <section class="border-b border-line">
-    <div class="shell pt-10 pb-16 md:pt-20 md:pb-24" data-reveal-group>
-      <div class="grid gap-12 md:grid-cols-12 md:gap-8">
-        <div class="md:col-span-7">
-          <p class="eyebrow" data-reveal>
-            Serbest Muhasebeci Mali Müşavirlik · İstanbul
+  <!-- Hero: full-bleed image, headline laid over it -->
+  <section class="relative min-h-[88vh] overflow-hidden bg-navy text-paper md:min-h-[92vh]">
+    <Figure
+      src={heroImg}
+      alt="Sisli havada yükselen cam cepheli ofis kulesi"
+      width={2200}
+      priority
+      reveal={false}
+      scrim
+      class="absolute inset-0 h-full w-full"
+    />
+
+    <div class="relative z-10 flex min-h-[88vh] flex-col justify-end md:min-h-[92vh]">
+      <div class="shell pb-14 pt-32 md:pb-20 md:pt-40" data-reveal-group>
+        <p class="eyebrow-invert eyebrow" data-reveal>
+          Serbest Muhasebeci Mali Müşavirlik · İstanbul
+        </p>
+        <h1
+          class="mt-7 max-w-[16ch] text-[3rem] leading-[0.98] md:text-[5.25rem] lg:text-[6.5rem]"
+          data-reveal
+        >
+          Muhasebeniz sürpriz üretmemeli.
+        </h1>
+        <div class="mt-9 grid gap-10 md:grid-cols-12 md:items-end">
+          <p class="max-w-[46ch] text-[1.0625rem] leading-relaxed text-paper/75 md:col-span-6" data-reveal>
+            {site.foundedYear}’den bu yana İstanbul’da KOBİ’lerin, e-ticaret satıcılarının ve serbest
+            meslek erbabının muhasebe, bordro ve vergi süreçlerini yürütüyoruz. Küçük bir ekibiz — bu,
+            dosyanızın kimde olduğunu bilmeniz demek.
           </p>
-          <h1
-            class="mt-7 text-[2.75rem] leading-[1.04] md:text-[4rem] lg:text-[4.75rem]"
-            data-reveal
-          >
-            Muhasebeniz, <span class="italic text-accent">sürpriz</span> üretmemeli.
-          </h1>
-          <p
-            class="mt-8 max-w-[54ch] text-[1.125rem] leading-relaxed text-ink-2"
-            data-reveal
-          >
-            Etik Mali Müşavirlik, {site.foundedYear} yılından bu yana İstanbul’da KOBİ’lerin,
-            e-ticaret satıcılarının ve serbest meslek erbabının muhasebe, bordro ve vergi süreçlerini
-            yürütüyor. Küçük bir ekibiz; bu, dosyanızın kimde olduğunu bilmeniz demek.
-          </p>
-          <div class="mt-10 flex flex-wrap gap-3" data-reveal>
-            <a href="/iletisim" class="btn">Ücretsiz ön görüşme</a>
-            <a href="/hizmetler" class="btn-ghost">Hizmetleri inceleyin</a>
+          <div class="flex flex-wrap gap-3 md:col-span-6 md:justify-end" data-reveal>
+            <a href="/iletisim" class="btn btn-light">Ücretsiz ön görüşme</a>
+            <a href="/hizmetler" class="btn-ghost btn-ghost-invert">Hizmetleri inceleyin</a>
           </div>
         </div>
+      </div>
 
-        <!-- Masthead block: the page's only "data" panel, and what replaces photography. -->
-        <div class="md:col-span-4 md:col-start-9" data-reveal>
-          <dl class="border-t border-line">
-            <div class="flex items-baseline justify-between gap-4 border-b border-line py-4">
-              <dt class="eyebrow">Kuruluş</dt>
-              <dd class="font-display text-[1.5rem] tnum" data-num>{site.foundedYear}</dd>
-            </div>
-            <div class="flex items-baseline justify-between gap-4 border-b border-line py-4">
-              <dt class="eyebrow">Ekip</dt>
-              <dd class="font-display text-[1.5rem] tnum">{team.length} kişi</dd>
-            </div>
-            <div class="flex items-baseline justify-between gap-4 border-b border-line py-4">
-              <dt class="eyebrow">Aktif mükellef</dt>
-              <dd class="font-display text-[1.5rem] tnum">
-                <span data-count="120" data-count-suffix="">120</span>
-              </dd>
-            </div>
-            <div class="flex items-baseline justify-between gap-4 border-b border-line py-4">
-              <dt class="eyebrow">Oda</dt>
-              <dd class="text-right text-[0.9375rem]">{site.chamber}</dd>
-            </div>
-            <div class="flex items-baseline justify-between gap-4 py-4">
-              <dt class="eyebrow">Konum</dt>
-              <dd class="text-right text-[0.9375rem]">
-                {site.address.locality} / {site.address.region}
-              </dd>
-            </div>
-          </dl>
+      <!-- Stats bar sitting on the image edge -->
+      <div class="relative z-10 border-t border-line-invert bg-navy/55 backdrop-blur-sm">
+        <div class="shell grid grid-cols-2 divide-x divide-line-invert md:grid-cols-4">
+          <div class="py-6 pr-4 md:py-7">
+            <p class="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper/50">Kuruluş</p>
+            <p class="mt-2 font-display text-[1.75rem] tnum md:text-[2.25rem]">{site.foundedYear}</p>
+          </div>
+          <div class="py-6 pl-5 pr-4 md:py-7">
+            <p class="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper/50">Aktif mükellef</p>
+            <p class="mt-2 font-display text-[1.75rem] tnum md:text-[2.25rem]">
+              <span data-count="120">120</span>
+            </p>
+          </div>
+          <div class="border-t border-line-invert py-6 pr-4 md:border-t-0 md:py-7 md:pl-5">
+            <p class="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper/50">Ekip</p>
+            <p class="mt-2 font-display text-[1.75rem] tnum md:text-[2.25rem]">{team.length}</p>
+          </div>
+          <div class="border-t border-line-invert py-6 pl-5 md:border-t-0 md:py-7">
+            <p class="text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper/50">Oda</p>
+            <p class="mt-2 font-display text-[1.125rem] leading-tight md:text-[1.375rem]">
+              İstanbul SMMMO
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Principles -->
-  <section class="shell py-16 md:py-24" aria-labelledby="ilke-baslik">
-    <h2 id="ilke-baslik" class="sr-only">Çalışma ilkelerimiz</h2>
-    <div class="grid gap-10 md:grid-cols-3 md:gap-8" data-reveal-group>
-      {
-        principles.map((p) => (
-          <article data-reveal>
-            <div class="rule mb-6" data-rule-draw />
-            <p class="eyebrow tnum">{p.no}</p>
-            <h3 class="mt-4 text-[1.5rem] leading-snug md:text-[1.75rem]">{p.title}</h3>
-            <p class="mt-4 max-w-[38ch] text-[0.9375rem] leading-relaxed text-ink-2">{p.text}</p>
-          </article>
-        ))
-      }
+  <!-- Positioning: image + text split -->
+  <section class="shell py-20 md:py-32" aria-labelledby="konum-baslik">
+    <div class="grid items-center gap-12 md:grid-cols-12 md:gap-16">
+      <div class="md:col-span-5">
+        <Figure
+          src={facadeImg}
+          alt="Cam cephede yansıyan geometrik çizgiler"
+          width={900}
+          class="aspect-[4/5] w-full"
+        />
+      </div>
+      <div class="md:col-span-6 md:col-start-7" data-reveal-group>
+        <p class="eyebrow" data-reveal>Neden Etik</p>
+        <h2 id="konum-baslik" class="mt-5 text-[2.25rem] md:text-[3.25rem]" data-reveal>
+          Büyümeyi değil, her dosyayı bilmeyi seçtik.
+        </h2>
+        <p class="mt-7 max-w-[54ch] text-[1.0625rem] leading-relaxed text-ink-2" data-reveal>
+          Bir mali müşavirlik bürosunun büyümesi kolaydır; her dosyayı bilerek büyümesi değil. Mükellef
+          sayımızı, her dosyanın en az bir ortak tarafından biliniyor olmasını bozmayacak seviyede
+          tutuyoruz.
+        </p>
+
+        <div class="mt-10 space-y-8">
+          {
+            principles.map((p) => (
+              <article class="border-t border-line pt-5" data-reveal>
+                <div class="flex items-baseline gap-4">
+                  <span class="font-display text-[0.875rem] tnum text-accent">{p.no}</span>
+                  <h3 class="text-[1.375rem] leading-snug md:text-[1.5rem]">{p.title}</h3>
+                </div>
+                <p class="mt-2.5 max-w-[52ch] pl-9 text-[0.9375rem] leading-relaxed text-muted">
+                  {p.text}
+                </p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Services -->
-  <section class="shell pb-4 md:pb-8" aria-labelledby="hizmet-baslik">
-    <div class="flex flex-wrap items-end justify-between gap-6 pb-8" data-reveal-group>
+  <section class="shell pb-20 md:pb-28" aria-labelledby="hizmet-baslik">
+    <div class="flex flex-wrap items-end justify-between gap-6 pb-10" data-reveal-group>
       <div data-reveal>
         <p class="eyebrow">Hizmetler</p>
-        <h2 id="hizmet-baslik" class="mt-4 text-[2.25rem] md:text-[3rem]">
+        <h2 id="hizmet-baslik" class="mt-5 text-[2.25rem] md:text-[3.25rem]">
           Yedi başlık, tek muhatap.
         </h2>
       </div>
-      <a href="/hizmetler" class="link-draw pb-1 text-[0.9375rem] text-accent" data-reveal>
+      <a href="/hizmetler" class="link-draw pb-1 font-semibold text-accent" data-reveal>
         Tüm hizmetler →
       </a>
     </div>
     <ServiceIndex />
   </section>
 
-  <!-- Calculator band — the site's one inverted section, and its one interactive tool. -->
-  <section class="mt-20 bg-deep py-16 text-paper md:mt-28 md:py-24" aria-labelledby="arac-baslik">
-    <div class="shell grid gap-12 md:grid-cols-12 md:gap-8" data-reveal-group>
+  <!-- Calculator band: full-bleed image ground -->
+  <section class="relative overflow-hidden bg-navy py-20 text-paper md:py-28" aria-labelledby="arac-baslik">
+    <Figure
+      src={towerImg}
+      alt="Gökyüzüne doğru yükselen kule cephesi"
+      width={2000}
+      reveal={false}
+      class="absolute inset-0 h-full w-full opacity-45"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/40"></div>
+
+    <div class="shell relative z-10 grid gap-12 md:grid-cols-12 md:gap-8" data-reveal-group>
       <div class="md:col-span-6">
-        <p class="eyebrow text-paper/45" data-reveal>Ücretsiz araç</p>
-        <h2 id="arac-baslik" class="mt-5 text-[2.25rem] md:text-[3rem]" data-reveal>
-          Net maaş hesaplama
+        <p class="eyebrow eyebrow-invert" data-reveal>Ücretsiz araç</p>
+        <h2 id="arac-baslik" class="mt-5 text-[2.5rem] md:text-[3.75rem]" data-reveal>
+          Net maaş<br />hesaplama
         </h2>
-        <p class="mt-6 max-w-[50ch] text-[1.0625rem] leading-relaxed text-paper/70" data-reveal>
+        <p class="mt-7 max-w-[48ch] text-[1.0625rem] leading-relaxed text-paper/75" data-reveal>
           Brütten nete, netten brüte. Gelir vergisi dilimi, SGK payları, damga vergisi ve asgari ücret
           istisnası dahil — üstelik 12 ayın tamamı için. Hesap tarayıcınızda çalışır, girdiğiniz tutar
           hiçbir yere gönderilmez.
         </p>
-        <a href="/araclar/maas-hesaplama" class="mt-9 inline-flex btn border-paper bg-paper text-deep hover:bg-transparent hover:text-paper" data-reveal>
+        <a href="/araclar/maas-hesaplama" class="btn btn-light mt-9" data-reveal>
           Hesaplamayı açın
         </a>
       </div>
@@ -159,19 +201,19 @@ const minWage = activeRates.minWageGross.toLocaleString('tr-TR', {
       <div class="md:col-span-5 md:col-start-8" data-reveal>
         <dl class="border-t border-line-invert">
           <div class="flex items-baseline justify-between gap-4 border-b border-line-invert py-4">
-            <dt class="eyebrow text-paper/45">{activeRates.year} asgari ücret (brüt)</dt>
+            <dt class="text-[0.8125rem] text-paper/55">{activeRates.year} asgari ücret (brüt)</dt>
             <dd class="font-display text-[1.375rem] tnum">{minWage} ₺</dd>
           </div>
           <div class="flex items-baseline justify-between gap-4 border-b border-line-invert py-4">
-            <dt class="eyebrow text-paper/45">SGK işçi payı</dt>
+            <dt class="text-[0.8125rem] text-paper/55">SGK işçi payı</dt>
             <dd class="font-display text-[1.375rem] tnum">%14</dd>
           </div>
           <div class="flex items-baseline justify-between gap-4 border-b border-line-invert py-4">
-            <dt class="eyebrow text-paper/45">Damga vergisi</dt>
+            <dt class="text-[0.8125rem] text-paper/55">Damga vergisi</dt>
             <dd class="font-display text-[1.375rem] tnum">binde 7,59</dd>
           </div>
           <div class="flex items-baseline justify-between gap-4 py-4">
-            <dt class="eyebrow text-paper/45">Gelir vergisi ilk dilim</dt>
+            <dt class="text-[0.8125rem] text-paper/55">Gelir vergisi ilk dilim</dt>
             <dd class="font-display text-[1.375rem] tnum">%15</dd>
           </div>
         </dl>
@@ -183,25 +225,33 @@ const minWage = activeRates.minWageGross.toLocaleString('tr-TR', {
   </section>
 
   <!-- Process -->
-  <section class="shell py-16 md:py-24" aria-labelledby="surec-baslik">
-    <div class="grid gap-10 md:grid-cols-12 md:gap-8" data-reveal-group>
-      <div class="md:col-span-4">
+  <section class="shell py-20 md:py-28" aria-labelledby="surec-baslik">
+    <div class="grid gap-12 md:grid-cols-12 md:gap-16" data-reveal-group>
+      <div class="md:col-span-5">
         <p class="eyebrow" data-reveal>Süreç</p>
-        <h2 id="surec-baslik" class="mt-5 text-[2.25rem] md:text-[2.75rem]" data-reveal>
+        <h2 id="surec-baslik" class="mt-5 text-[2.25rem] md:text-[3rem]" data-reveal>
           Başlarken ne oluyor?
         </h2>
-        <p class="mt-6 max-w-[38ch] text-[0.9375rem] leading-relaxed text-ink-2" data-reveal>
+        <p class="mt-6 max-w-[40ch] text-[1.0625rem] leading-relaxed text-ink-2" data-reveal>
           Mevcut müşavirinizden devir dahil, ilk ay genelde bir haftada tamamlanır.
         </p>
+        <div class="mt-10 hidden md:block">
+          <Figure
+            src={gridImg}
+            alt="Modüler bir bina cephesinin ızgara deseni"
+            width={800}
+            class="aspect-[5/4] w-full"
+          />
+        </div>
       </div>
-      <ol class="md:col-span-7 md:col-start-6">
+      <ol class="md:col-span-6 md:col-start-7">
         {
           steps.map((s) => (
-            <li class="grid grid-cols-[3rem_1fr] gap-x-5 border-b border-line py-6" data-reveal>
-              <span class="eyebrow tnum pt-1">{s.no}</span>
+            <li class="grid grid-cols-[3rem_1fr] gap-x-5 border-b border-line py-7" data-reveal>
+              <span class="font-display text-[0.875rem] tnum text-accent">{s.no}</span>
               <div>
-                <h3 class="text-[1.375rem] leading-snug">{s.title}</h3>
-                <p class="mt-2 max-w-[46ch] text-[0.9375rem] leading-relaxed text-ink-2">
+                <h3 class="text-[1.5rem] leading-snug">{s.title}</h3>
+                <p class="mt-2.5 max-w-[46ch] text-[0.9375rem] leading-relaxed text-muted">
                   {s.text}
                 </p>
               </div>
@@ -213,35 +263,45 @@ const minWage = activeRates.minWageGross.toLocaleString('tr-TR', {
   </section>
 
   <!-- Team preview -->
-  <section class="shell pb-16 md:pb-24" aria-labelledby="ekip-baslik">
-    <div class="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-12" data-reveal-group>
-      <div data-reveal>
-        <p class="eyebrow">Ekip</p>
-        <h2 id="ekip-baslik" class="mt-4 text-[2.25rem] md:text-[2.75rem]">
-          Dört kişi, isimleriyle.
-        </h2>
+  <section class="bg-paper-2 py-20 md:py-28" aria-labelledby="ekip-baslik">
+    <div class="shell">
+      <div class="flex flex-wrap items-end justify-between gap-6" data-reveal-group>
+        <div data-reveal>
+          <p class="eyebrow">Ekip</p>
+          <h2 id="ekip-baslik" class="mt-5 text-[2.25rem] md:text-[3rem]">
+            Dört kişi, isimleriyle.
+          </h2>
+        </div>
+        <a href="/ekip" class="link-draw pb-1 font-semibold text-accent" data-reveal>Ekibi görün →</a>
       </div>
-      <a href="/ekip" class="link-draw pb-1 text-[0.9375rem] text-accent" data-reveal>Ekibi görün →</a>
-    </div>
-    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
-      {
-        team.map((m) => (
-          <article class="border-t border-line pt-5" data-reveal>
-            <h3 class="text-[1.375rem] leading-snug">{m.name}</h3>
-            <p class="eyebrow mt-2">{m.title}</p>
-            <p class="mt-4 text-[0.875rem] leading-relaxed text-muted">{m.focus.join(' · ')}</p>
-          </article>
-        ))
-      }
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+        {
+          team.map((m) => (
+            <article class="bg-surface p-6" data-reveal>
+              <div class="flex h-14 w-14 items-center justify-center bg-navy font-display text-[1.25rem] text-paper">
+                {m.name
+                  .split(' ')
+                  .map((part) => part[0])
+                  .join('')}
+              </div>
+              <h3 class="mt-6 text-[1.375rem] leading-snug">{m.name}</h3>
+              <p class="mt-2 text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-accent">
+                {m.title}
+              </p>
+              <p class="mt-4 text-[0.875rem] leading-relaxed text-muted">{m.focus.join(' · ')}</p>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="shell pb-16 md:pb-24" aria-labelledby="sss-baslik">
-    <div class="grid gap-10 md:grid-cols-12 md:gap-8">
+  <section class="shell py-20 md:py-28" aria-labelledby="sss-baslik">
+    <div class="grid gap-12 md:grid-cols-12 md:gap-16">
       <div class="md:col-span-4">
         <p class="eyebrow">Sık sorulanlar</p>
-        <h2 id="sss-baslik" class="mt-5 text-[2.25rem] md:text-[2.75rem]">
+        <h2 id="sss-baslik" class="mt-5 text-[2.25rem] md:text-[3rem]">
           Genelde ilk sorulanlar.
         </h2>
       </div>

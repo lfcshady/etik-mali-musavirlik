@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { services } from '../../data/services';
+import headerImg from '../../assets/glass-wall.jpg';
 
 export function getStaticPaths() {
   return services.map((service, index) => ({
@@ -30,6 +31,8 @@ const { service, next } = Astro.props;
       { label: 'Sıklık', value: service.cadence },
       { label: 'Hizmet no', value: service.no },
     ]}
+    image={headerImg}
+    imageAlt="Cam bir cephenin yakın planı"
   />
 
   <section class="shell py-14 md:py-20">
@@ -56,7 +59,7 @@ const { service, next } = Astro.props;
       </div>
 
       <aside class="md:col-span-4 md:col-start-9" data-reveal>
-        <div class="border border-line bg-card p-6">
+        <div class="border border-line bg-surface p-6">
           <h2 class="eyebrow">Kimin için</h2>
           <p class="mt-4 text-[1.0625rem] leading-relaxed">{service.audience}</p>
           <div class="mt-7 border-t border-line pt-6">

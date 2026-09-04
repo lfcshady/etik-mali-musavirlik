@@ -2,29 +2,36 @@
 // Footer, contact page, schema.org and the header CTA all read from here — never duplicate a
 // phone number or an address in a component.
 //
-// TODO(brief): every value marked `fictional` below is placeholder data. The phone numbers are
-// deliberately invalid (000 00 00) so the site never dials a real stranger.
+// ⚠️ TASLAK BUILD. Every contact value below is a standard placeholder from
+// `_shared/taslak-mode.md` §3 and reaches no real person or business. Switching to `gerçek`
+// means replacing all of them and setting `taslak: false`. See site/DEMO.md.
+
+/** Drives the draft bar, the /taslak page, and the noindex meta. */
+export const taslak = true;
 
 export const site = {
   name: 'Etik Mali Müşavirlik',
   shortName: 'Etik',
-  legalName: 'Etik Serbest Muhasebeci Mali Müşavirlik', // fictional
+  legalName: 'Etik Serbest Muhasebeci Mali Müşavirlik',
   tagline: 'Serbest Muhasebeci Mali Müşavirlik Bürosu',
-  domain: 'https://etikmusavirlik.com.tr', // fictional
-  foundedYear: 2011, // fictional
-  chamber: 'İstanbul SMMM Odası', // fictional
+  domain: 'https://ornekfirma.com', // taslak placeholder domain
+  foundedYear: 2011,
+  chamber: 'İstanbul SMMM Odası',
+  // No oda sicil / ruhsat number anywhere: Class C, never invented. Client supplies it.
 
-  phone: '+902120000000', // fictional — intentionally unroutable
-  phoneDisplay: '0212 000 00 00',
-  whatsapp: '905320000000', // fictional
-  whatsappDisplay: '0532 000 00 00',
-  email: 'bilgi@etikmusavirlik.com.tr', // fictional
+  phone: '+905555555555',
+  phoneDisplay: '0555 555 55 55',
+  phoneAlt: '+902125555555',
+  phoneAltDisplay: '0212 555 55 55',
+  whatsapp: '905555555555',
+  whatsappDisplay: '0555 555 55 55',
+  email: 'ornek@ornekfirma.com',
 
   address: {
-    street: 'Esentepe Mah. Büyükdere Cad. No: 122, Kat 7',
+    street: 'Örnek Mah. Örnek Cad. No: 1',
     locality: 'Şişli',
     region: 'İstanbul',
-    postalCode: '34394',
+    postalCode: '34381',
     country: 'TR',
   },
 
@@ -33,21 +40,20 @@ export const site = {
     { days: 'Cumartesi', time: 'Randevu ile' },
     { days: 'Pazar', time: 'Kapalı' },
   ],
-  // schema.org openingHours format
   openingHours: ['Mo-Fr 09:00-18:30'],
 
-  // TODO(brief): replace with the real Google Maps place link and coordinates.
+  // District-level centre pin — never a real business listing (taslak-mode §3).
   maps: {
-    url: 'https://www.google.com/maps/search/?api=1&query=Esentepe+Mah.+B%C3%BCy%C3%BCkdere+Cad.+No%3A122+%C5%9Ei%C5%9Fli+%C4%B0stanbul',
-    embed:
-      'https://www.google.com/maps?q=Esentepe%20Mah.%20B%C3%BCy%C3%BCkdere%20Cad.%20No%3A122%20%C5%9Ei%C5%9Fli%20%C4%B0stanbul&output=embed',
-    lat: 41.0742,
-    lng: 29.0106,
+    url: 'https://www.google.com/maps/search/?api=1&query=%C5%9Ei%C5%9Fli%2C+%C4%B0stanbul',
+    embed: 'https://www.google.com/maps?q=%C5%9Ei%C5%9Fli%2C%20%C4%B0stanbul&z=13&output=embed',
+    lat: 41.0602,
+    lng: 28.9877,
   },
 
+  // Platform home pages, never a real account.
   social: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/etikmusavirlik' }, // fictional
-    { label: 'Instagram', href: 'https://www.instagram.com/etikmusavirlik' }, // fictional
+    { label: 'LinkedIn', href: 'https://www.linkedin.com' },
+    { label: 'Instagram', href: 'https://www.instagram.com' },
   ],
 
   areaServed: ['İstanbul', 'Türkiye'],

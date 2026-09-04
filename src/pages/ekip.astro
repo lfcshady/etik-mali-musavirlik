@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { team } from '../data/team';
+import headerImg from '../assets/brick-up.jpg';
 ---
 
 <Base
@@ -18,6 +19,8 @@ import { team } from '../data/team';
       { label: 'Ekip', value: `${team.length} kişi` },
       { label: 'Ruhsatlı meslek mensubu', value: '2 SMMM' },
     ]}
+    image={headerImg}
+    imageAlt="Aşağıdan yukarı bakan açıyla tuğla cepheli bina"
   />
 
   <section class="shell py-14 md:py-20">

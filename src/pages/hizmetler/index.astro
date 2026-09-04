@@ -5,6 +5,7 @@ import ServiceIndex from '../../components/ServiceIndex.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { services } from '../../data/services';
+import headerImg from '../../assets/facade-grid.jpg';
 ---
 
 <Base
@@ -21,6 +22,8 @@ import { services } from '../../data/services';
       { label: 'Muhatap', value: 'Tek kişi' },
       { label: 'İlk görüşme', value: 'Ücretsiz' },
     ]}
+    image={headerImg}
+    imageAlt="Modüler bir bina cephesinin ızgara deseni"
   />
 
   <section class="shell py-14 md:py-20">

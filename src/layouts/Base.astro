@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import { site, taslak } from '../data/site';
 
 interface Props {
   title: string;
@@ -10,7 +10,7 @@ interface Props {
   /** Page path for canonical + og:url, e.g. '/hizmetler' */
   path?: string;
   /** Hero sits directly under the header on the home page. */
-  headerVariant?: 'default' | 'flush';
+  headerVariant?: 'default' | 'overlay';
 }
 
 const { title, description, path = '/', headerVariant = 'default' } = Astro.props;
@@ -54,6 +54,7 @@ const schema = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {taslak && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
@@ -67,7 +68,7 @@ const schema = {
     <meta property="og:image:alt" content={`${site.name} — ${site.tagline}`} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="theme-color" content="#F7F5F0" />
+    <meta name="theme-color" content="#F5F3EF" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/favicon-180.png" />
 
@@ -75,14 +76,14 @@ const schema = {
       rel="preload"
       as="font"
       type="font/woff2"
-      href="/fonts/newsreader-normal-300-600-latin-ext.woff2"
+      href="/fonts/archivo-normal-400-800-latin-ext.woff2"
       crossorigin
     />
     <link
       rel="preload"
       as="font"
       type="font/woff2"
-      href="/fonts/ibm-plex-sans-normal-400-latin-ext.woff2"
+      href="/fonts/plus-jakarta-sans-normal-400-latin-ext.woff2"
       crossorigin
     />
 
@@ -137,6 +138,16 @@ const schema = {
             ease: EASE,
             stagger: 0.07,
             scrollTrigger: { trigger: items[0], start: 'top 88%', once: true },
+          });
+        });
+
+        // Images wipe up into place — a slower, heavier motion than the text.
+        document.querySelectorAll<HTMLElement>('[data-img-reveal]').forEach((el) => {
+          gsap.to(el, {
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 1.25,
+            ease: EASE,
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
           });
         });
 

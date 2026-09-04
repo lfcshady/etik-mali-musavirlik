@@ -1,0 +1,46 @@
+---
+// Draft notice bar. Part of the design, not a garish banner (taslak-mode §5).
+// Dismissed state is per-visitor and per-session only.
+---
+
+<div
+  id="taslak-bar"
+  class="relative z-[60] border-b border-line-invert bg-navy text-paper"
+>
+  <div class="shell flex items-center gap-4 py-2.5">
+    <span
+      class="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-accent-2 sm:block"
+      aria-hidden="true"></span>
+    <p class="flex-1 text-[0.8125rem] leading-snug text-paper/80">
+      <span class="font-semibold text-paper">Taslak sunum</span> — görseller ve bilgiler temsilidir.
+      Kendi bilgilerinizle değiştirilecektir.
+      <a href="/taslak" class="link-draw ml-1 whitespace-nowrap font-semibold text-accent-2"
+        >Değişecek alanlar →</a
+      >
+    </p>
+    <button
+      type="button"
+      id="taslak-close"
+      class="shrink-0 p-1 text-paper/50 transition-colors hover:text-paper"
+      aria-label="Taslak bildirimini kapat"
+    >
+      <svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 3l10 10M13 3L3 13" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('taslak-bar');
+  const close = document.getElementById('taslak-close');
+  try {
+    if (sessionStorage.getItem('taslak-bar-dismissed') === '1' && bar) bar.hidden = true;
+  } catch {}
+  close?.addEventListener('click', () => {
+    if (bar) bar.hidden = true;
+    try {
+      sessionStorage.setItem('taslak-bar-dismissed', '1');
+    } catch {}
+  });
+</script>

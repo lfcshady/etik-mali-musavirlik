@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import headerImg from '../assets/facade-grid.jpg';
+
+// The list the client is walked through when asking for their own material.
+// Mirrors site/DEMO.md — keep the two in step.
+const groups = [
+  {
+    title: 'İletişim bilgileri',
+    note: 'Hepsi standart yer tutucudur ve kimseye ulaşmaz.',
+    items: [
+      'Telefon: 0555 555 55 55',
+      'WhatsApp numarası',
+      'E-posta: ornek@ornekfirma.com',
+      'Adres: Örnek Mah. Örnek Cad. No: 1',
+      'Harita konumu (şu an ilçe merkezine sabit)',
+      'LinkedIn ve Instagram hesapları (şu an platform ana sayfaları)',
+      'Alan adı',
+    ],
+  },
+  {
+    title: 'Ekip',
+    note: 'Dört kişinin de adı, unvanı ve özgeçmişi kurgudur — yayın öncesi mutlaka değişmeli.',
+    items: [
+      'Mert Kalaycı, Elif Sarıgül, Burak Yalçın, Ceren Aktaş isimleri',
+      'Unvanlar ve büroya katılım yılları',
+      'Kısa özgeçmiş metinleri',
+      'Ekip fotoğrafları (şu an baş harf kutuları kullanılıyor)',
+    ],
+  },
+  {
+    title: 'Büro bilgileri',
+    note: 'Sunumu tamamlamak için varsayıldı.',
+    items: [
+      'Kuruluş yılı: 2011',
+      'Aktif mükellef sayısı: 120',
+      'İstanbul SMMM Odası üyeliği',
+      'Hizmet kapsam maddeleri ve çalışma saatleri',
+      'Hakkımızda sayfasındaki büro hikâyesi',
+    ],
+  },
+  {
+    title: 'Görseller',
+    note: 'Tümü serbest lisanslı (CC0) mimari fotoğraflardır; büroya ait değildir.',
+    items: [
+      'Ana sayfa kapak görseli',
+      'Bölüm ve sayfa başlığı görselleri',
+      'Büronun kendi ofis/bina fotoğrafları ile değiştirilmesi önerilir',
+    ],
+  },
+  {
+    title: 'Müşteriden istenecekler',
+    note: 'Bunlar kasıtlı olarak boş bırakıldı — uydurulması yasak.',
+    items: [
+      'SMMM ruhsat ve oda sicil numarası',
+      'Vergi numarası ve ticaret sicil / MERSİS bilgisi',
+      'Varsa mevcut logo ve kurumsal kimlik dosyaları',
+    ],
+  },
+];
+---
+
+<Base
+  title="Taslak hakkında"
+  description="Bu sunum taslağında hangi bilgilerin temsili olduğunu ve yayın öncesi nelerin değişmesi gerektiğini gösteren liste."
+  path="/taslak"
+>
+  <PageHeader
+    eyebrow="Taslak sunum"
+    title="Yayın öncesi değişecek alanlar."
+    lead="Bu site, kendi bilgilerinizle doldurulmak üzere hazırlanmış bir sunum taslağıdır. Aşağıdaki her madde temsilidir ve sizden gelecek bilgiyle değiştirilecektir."
+    image={headerImg}
+    imageAlt="Modüler bir bina cephesinin ızgara deseni"
+  />
+
+  <section class="shell py-14 md:py-20">
+    <div class="grid gap-px bg-line md:grid-cols-2" data-reveal-group>
+      {
+        groups.map((g) => (
+          <article class="bg-paper p-7 md:p-8" data-reveal>
+            <h2 class="text-[1.5rem] leading-tight md:text-[1.75rem]">{g.title}</h2>
+            <p class="mt-3 text-[0.9375rem] leading-relaxed text-muted">{g.note}</p>
+            <ul class="mt-5 space-y-2.5">
+              {g.items.map((item) => (
+                <li class="flex gap-3 border-b border-line-soft pb-2.5 text-[0.9375rem]">
+                  <span aria-hidden="true" class="text-accent">
+                    ·
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="mt-10 max-w-[70ch] border-l-2 border-accent pl-5 text-[0.9375rem] leading-relaxed text-ink-2">
+      Hesaplama aracındaki vergi ve SGK oranları temsili değildir — {''}
+      <strong class="font-semibold">2025 yılının resmî parametreleridir</strong> ve doğru çalışır.
+      Yalnızca bilgilendirme amaçlı olduğu notu her sonucun altında yer alır.
+    </p>
+  </section>
+</Base>

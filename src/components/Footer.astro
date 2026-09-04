@@ -6,7 +6,7 @@ import { services } from '../data/services';
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-28 bg-deep text-paper md:mt-40">
+<footer class="bg-navy text-paper">
   <div class="shell py-16 md:py-20">
     <div class="grid gap-12 md:grid-cols-12 md:gap-8">
       <div class="md:col-span-4">
@@ -79,7 +79,7 @@ const year = new Date().getFullYear();
           <a href={site.maps.url} target="_blank" rel="noopener noreferrer" class="block link-draw">
             {addressLine}
           </a>
-          <a href={telHref} class="block font-mono link-draw">{site.phoneDisplay}</a>
+          <a href={telHref} class="block link-draw">{site.phoneDisplay}</a>
           <a href={mailHref} class="block link-draw">{site.email}</a>
         </address>
         <dl class="mt-6 space-y-1.5 text-[0.875rem] text-paper/55">
