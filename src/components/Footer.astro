@@ -1,0 +1,108 @@
+---
+import Mark from './Mark.astro';
+import { site, nav, telHref, mailHref, addressLine } from '../data/site';
+import { services } from '../data/services';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-28 bg-deep text-paper md:mt-40">
+  <div class="shell py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-4">
+        <div class="flex items-center gap-3">
+          <Mark class="h-7 w-7" />
+          <span class="font-display text-2xl">Etik Mali Müşavirlik</span>
+        </div>
+        <p class="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-paper/60">
+          {site.foundedYear}’den bu yana İstanbul’da faaliyet gösteren serbest muhasebeci mali
+          müşavirlik bürosu.
+        </p>
+        <div class="mt-6 flex gap-5">
+          {
+            site.social.map((s) => (
+              <a
+                href={s.href}
+                rel="noopener noreferrer"
+                target="_blank"
+                class="link-draw text-[0.875rem] text-paper/70 hover:text-paper"
+              >
+                {s.label}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="md:col-span-3">
+        <h2 class="eyebrow text-paper/45">Hizmetler</h2>
+        <ul class="mt-5 space-y-2.5">
+          {
+            services.slice(0, 5).map((s) => (
+              <li>
+                <a
+                  href={`/hizmetler/${s.slug}`}
+                  class="link-draw text-[0.9375rem] text-paper/75 hover:text-paper"
+                >
+                  {s.title}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/hizmetler" class="link-draw text-[0.9375rem] text-paper/45">Tümü →</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-2">
+        <h2 class="eyebrow text-paper/45">Site</h2>
+        <ul class="mt-5 space-y-2.5">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="link-draw text-[0.9375rem] text-paper/75 hover:text-paper"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <h2 class="eyebrow text-paper/45">İletişim</h2>
+        <address class="mt-5 space-y-3 not-italic text-[0.9375rem] text-paper/75">
+          <a href={site.maps.url} target="_blank" rel="noopener noreferrer" class="block link-draw">
+            {addressLine}
+          </a>
+          <a href={telHref} class="block font-mono link-draw">{site.phoneDisplay}</a>
+          <a href={mailHref} class="block link-draw">{site.email}</a>
+        </address>
+        <dl class="mt-6 space-y-1.5 text-[0.875rem] text-paper/55">
+          {
+            site.hours.map((h) => (
+              <div class="flex justify-between gap-4">
+                <dt>{h.days}</dt>
+                <dd class="tnum">{h.time}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+
+    <div
+      class="mt-14 flex flex-col gap-4 border-t border-line-invert pt-6 text-[0.8125rem] text-paper/45 md:flex-row md:items-center md:justify-between"
+    >
+      <p>© {year} {site.legalName}. Tüm hakları saklıdır.</p>
+      <p class="max-w-xl md:text-right">
+        Sitedeki hesaplama araçları ve içerikler bilgilendirme amaçlıdır, mali müşavirlik hizmeti
+        yerine geçmez ve bağlayıcı değildir.
+      </p>
+    </div>
+  </div>
+</footer>

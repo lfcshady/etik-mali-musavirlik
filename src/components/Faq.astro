@@ -1,0 +1,39 @@
+---
+import { faq } from '../data/faq';
+
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+const items = limit ? faq.slice(0, limit) : faq;
+---
+
+<div class="border-t border-line" data-reveal-group>
+  {
+    items.map((item, i) => (
+      <details class="group border-b border-line" data-reveal>
+        <summary class="flex cursor-pointer list-none items-start gap-5 py-5 md:py-6">
+          <span class="eyebrow mt-1.5 tnum">{String(i + 1).padStart(2, '0')}</span>
+          <span class="flex-1 font-display text-[1.25rem] leading-snug md:text-[1.375rem]">
+            {item.q}
+          </span>
+          <span
+            aria-hidden="true"
+            class="mt-1 shrink-0 text-accent transition-transform duration-500 group-open:rotate-45"
+          >
+            +
+          </span>
+        </summary>
+        <p class="max-w-[62ch] pb-6 pl-0 text-[0.9375rem] leading-relaxed text-ink-2 md:pl-[3.25rem]">
+          {item.a}
+        </p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

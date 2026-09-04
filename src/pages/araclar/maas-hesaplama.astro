@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SalaryCalculator from '../../components/SalaryCalculator.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { activeRates } from '../../data/rates';
+
+const faq = [
+  {
+    q: 'Net maaş neden yıl içinde düşüyor?',
+    a: 'Gelir vergisi, ücretin kümülatif matrahı üzerinden hesaplanır. Yıl başından itibaren biriken matrah bir üst dilime geçtiğinde, aynı brüt ücretten daha fazla vergi kesilir ve ele geçen tutar azalır. Tablodaki “Dilim” sütunu bu geçişin hangi ayda olduğunu gösterir.',
+  },
+  {
+    q: 'Asgari ücret istisnası ne demek?',
+    a: 'Tüm ücretlilerde, asgari ücrete isabet eden gelir vergisi ve damga vergisi tutarı kesintiden düşülür. Bu nedenle asgari ücretli çalışandan gelir ve damga vergisi kesilmez; daha yüksek ücretlerde ise kesintinin bu kısmı indirilmiş olur.',
+  },
+  {
+    q: 'İşverene maliyet neyi kapsıyor?',
+    a: 'Brüt ücrete ek olarak işveren SGK primi ve işveren işsizlik sigortası primini kapsar. 5510 sayılı Kanun kapsamındaki işverenler 5 puanlık prim indiriminden yararlanabilir; bu seçenek işaretlendiğinde maliyet buna göre hesaplanır. Kıdem/ihbar karşılığı, yemek ve yol gibi yan haklar dahil değildir.',
+  },
+  {
+    q: 'Girdiğim maaş bilgisi kaydediliyor mu?',
+    a: 'Hayır. Hesaplama tamamen tarayıcınızda çalışır; girdiğiniz hiçbir tutar sunucuya gönderilmez, saklanmaz veya üçüncü taraflarla paylaşılmaz.',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base
+  title={`Net Maaş Hesaplama ${activeRates.year}`}
+  description={`${activeRates.year} parametreleriyle brütten nete ve netten brüte maaş hesaplama. SGK payları, gelir vergisi dilimi, damga vergisi ve asgari ücret istisnası dahil 12 aylık döküm.`}
+  path="/araclar/maas-hesaplama"
+>
+  <PageHeader
+    eyebrow={`Ücretsiz araç · ${activeRates.year}`}
+    title="Net maaş hesaplama"
+    lead="Brütten nete veya netten brüte. Kesinti kalemlerini ve 12 ayın tamamını gösterir — tarayıcınızda çalışır, hiçbir veri gönderilmez."
+    meta={[
+      { label: 'Parametre yılı', value: String(activeRates.year) },
+      { label: 'Veri gönderimi', value: 'Yok' },
+      { label: 'Kapsam', value: '12 ay' },
+    ]}
+  />
+
+  <section class="shell py-12 md:py-16">
+    <SalaryCalculator />
+  </section>
+
+  <section class="shell pb-16 md:pb-24" aria-labelledby="arac-sss">
+    <div class="grid gap-10 border-t border-line pt-12 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-4">
+        <p class="eyebrow">Hesap hakkında</p>
+        <h2 id="arac-sss" class="mt-5 text-[2.25rem] md:text-[2.75rem]">
+          Sayının arkasında ne var?
+        </h2>
+      </div>
+      <div class="md:col-span-7 md:col-start-6" data-reveal-group>
+        <dl class="border-t border-line">
+          {
+            faq.map((f) => (
+              <div class="border-b border-line py-6" data-reveal>
+                <dt class="font-display text-[1.375rem] leading-snug">{f.q}</dt>
+                <dd class="mt-3 max-w-[62ch] text-[0.9375rem] leading-relaxed text-ink-2">{f.a}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Bordronuzu biz yürütelim."
+    text="Hesaplama aracı bir fikir verir; bordro ise eksik gün, teşvik, yan hak ve SGK bildirimleriyle birlikte yürütülür. Personel sayınız kaç olursa olsun süreç aynıdır."
+  />
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+</Base>

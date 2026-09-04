@@ -1,0 +1,192 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+/* ---------------------------------------------------------------------------
+   Design tokens — Etik Mali Müşavirlik
+   Paper ground, ink text, one deep blue accent used at low frequency.
+   Never hardcode a hex in a component; if a colour is missing, add it here.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-paper: #f7f5f0;
+  --color-paper-2: #f1eee7;
+  --color-card: #fdfcfa;
+  --color-ink: #16181c;
+  --color-ink-2: #3a4048;
+  --color-muted: #5f666e;
+  --color-accent: #1b3a5c;
+  --color-accent-soft: #e6ecf2;
+  --color-deep: #12151a;
+  --color-deep-2: #1b1f26;
+  --color-line: rgb(22 24 28 / 0.13);
+  --color-line-soft: rgb(22 24 28 / 0.07);
+  --color-line-invert: rgb(247 245 240 / 0.16);
+
+  --font-display: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    font-feature-settings: 'kern', 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 350;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  /* Every figure on this site is read as data. Digits must line up. */
+  table, .tnum, time, [data-num] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  input, select, button {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+@layer components {
+  .shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1240px;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .shell { padding-inline: 2.5rem; }
+  }
+
+  /* Small uppercase mono label. The device that makes the page read as
+     documented rather than decorated. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--color-line);
+    transform-origin: left;
+  }
+
+  /* Underline that draws in on hover — used instead of buttons for text links. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: left 100%;
+    transition: background-size 0.4s var(--ease-out-expo);
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.8125rem 1.375rem;
+    background: var(--color-accent);
+    color: var(--color-paper);
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+    border: 1px solid var(--color-accent);
+    transition: background-color 0.35s var(--ease-out-expo),
+                color 0.35s var(--ease-out-expo);
+  }
+  .btn:hover {
+    background: transparent;
+    color: var(--color-accent);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.8125rem 1.375rem;
+    border: 1px solid var(--color-line);
+    font-size: 0.875rem;
+    transition: border-color 0.35s var(--ease-out-expo),
+                background-color 0.35s var(--ease-out-expo);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-ink);
+    background: var(--color-paper-2);
+  }
+
+  .prose-tr p {
+    max-width: 62ch;
+    color: var(--color-ink-2);
+  }
+  .prose-tr p + p {
+    margin-top: 1.1em;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reveal — elements start hidden only when JS is present, so the page is fully
+   readable without it (and for crawlers).
+   --------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 1;
+}
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+html.js [data-rule-draw] {
+  transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  html.js [data-reveal],
+  html.js [data-rule-draw] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

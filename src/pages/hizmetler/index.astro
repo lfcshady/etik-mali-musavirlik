@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ServiceIndex from '../../components/ServiceIndex.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services } from '../../data/services';
+---
+
+<Base
+  title="Hizmetler"
+  description="Muhasebe ve defter tutma, bordro, vergi danışmanlığı, şirket kuruluşu, e-ticaret muhasebesi, teşvik başvuruları ve finansal raporlama. İstanbul’da SMMM hizmetleri."
+  path="/hizmetler"
+>
+  <PageHeader
+    eyebrow="Hizmetler"
+    title="Yaptığımız iş, kapsamıyla birlikte."
+    lead="Her başlığın altında ne yapıldığı yazılıdır: hangi işlem, hangi sıklıkta, kimin için. Kapsam dışı kalan bir konu varsa görüşmede söyleriz."
+    meta={[
+      { label: 'Hizmet başlığı', value: String(services.length) },
+      { label: 'Muhatap', value: 'Tek kişi' },
+      { label: 'İlk görüşme', value: 'Ücretsiz' },
+    ]}
+  />
+
+  <section class="shell py-14 md:py-20">
+    <ServiceIndex />
+  </section>
+
+  <section class="shell pb-16 md:pb-24" aria-labelledby="sss-baslik">
+    <div class="grid gap-10 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-4">
+        <p class="eyebrow">Sık sorulanlar</p>
+        <h2 id="sss-baslik" class="mt-5 text-[2.25rem] md:text-[2.75rem]">
+          Kapsam ve çalışma düzeni.
+        </h2>
+      </div>
+      <div class="md:col-span-7 md:col-start-6">
+        <Faq />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

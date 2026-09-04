@@ -1,0 +1,39 @@
+---
+import { services } from '../data/services';
+
+interface Props {
+  limit?: number;
+  showSummary?: boolean;
+}
+const { limit, showSummary = true } = Astro.props;
+const list = limit ? services.slice(0, limit) : services;
+---
+
+<ul class="border-t border-line" data-reveal-group>
+  {
+    list.map((s) => (
+      <li data-reveal>
+        <a
+          href={`/hizmetler/${s.slug}`}
+          class="group grid grid-cols-[auto_1fr] items-baseline gap-x-5 gap-y-2 border-b border-line py-6 transition-colors duration-500 hover:bg-paper-2 md:grid-cols-[3.5rem_minmax(0,20rem)_1fr_auto] md:gap-x-8 md:py-7"
+        >
+          <span class="eyebrow tnum">{s.no}</span>
+          <h3 class="font-display text-[1.5rem] leading-tight transition-colors duration-500 group-hover:text-accent md:text-[1.75rem]">
+            {s.title}
+          </h3>
+          {showSummary && (
+            <p class="col-start-2 max-w-[46ch] text-[0.9375rem] leading-relaxed text-muted md:col-start-3">
+              {s.summary}
+            </p>
+          )}
+          <span
+            aria-hidden="true"
+            class="col-start-2 text-accent opacity-0 transition-all duration-500 group-hover:opacity-100 md:col-start-4 md:-translate-x-2 md:group-hover:translate-x-0"
+          >
+            →
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

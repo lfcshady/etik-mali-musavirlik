@@ -1,0 +1,95 @@
+---
+import Mark from './Mark.astro';
+import { site, nav, telHref } from '../data/site';
+
+interface Props {
+  variant?: 'default' | 'flush';
+}
+const { variant = 'default' } = Astro.props;
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => current === href || current.startsWith(href + '/');
+---
+
+<header
+  class:list={[
+    'sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur-md',
+    variant === 'flush' && 'border-b-0',
+  ]}
+>
+  <div class="shell flex h-16 items-center justify-between gap-6 md:h-20">
+    <a href="/" class="flex items-center gap-3 text-ink" aria-label={`${site.name} — ana sayfa`}>
+      <Mark class="h-6 w-6 text-accent md:h-7 md:w-7" />
+      <span class="flex flex-col leading-none">
+        <span class="font-display text-[1.35rem] tracking-tight md:text-[1.5rem]">Etik</span>
+        <span class="eyebrow mt-0.5 text-[0.5625rem] md:text-[0.625rem]">Mali Müşavirlik</span>
+      </span>
+    </a>
+
+    <nav aria-label="Ana menü" class="hidden items-center gap-7 lg:flex">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'link-draw py-1 text-[0.9375rem]',
+              isActive(item.href) ? 'text-accent' : 'text-ink-2 hover:text-ink',
+            ]}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <a
+        href={telHref}
+        class="hidden font-mono text-[0.8125rem] tracking-tight text-ink-2 link-draw md:inline"
+        >{site.phoneDisplay}</a
+      >
+      <a href="/iletisim" class="btn hidden md:inline-flex">Görüşme talep edin</a>
+
+      <button
+        type="button"
+        id="menu-toggle"
+        class="flex h-10 w-10 items-center justify-center border border-line lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="sr-only">Menüyü aç</span>
+        <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 5h16M2 10h16M2 15h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" hidden class="border-t border-line bg-paper lg:hidden">
+    <nav aria-label="Mobil menü" class="shell flex flex-col py-2">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="border-b border-line-soft py-3.5 text-[1.0625rem]">
+            {item.label}
+          </a>
+        ))
+      }
+      <div class="flex flex-col gap-3 py-5">
+        <a href="/iletisim" class="btn justify-center">Görüşme talep edin</a>
+        <a href={telHref} class="btn-ghost justify-center font-mono text-[0.875rem]">
+          {site.phoneDisplay}
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    if (menu) menu.hidden = open;
+  });
+</script>

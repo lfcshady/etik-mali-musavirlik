@@ -1,0 +1,23 @@
+---
+// The Etik mark: an E whose middle arm is detached and shifted — the line that is
+// brought back into alignment. Pure geometry, no font dependency, legible at 16px.
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className = 'h-7 w-7', title } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 32 32"
+  class={className}
+  fill="currentColor"
+  role={title ? 'img' : 'presentation'}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+>
+  <rect x="5" y="5" width="3.2" height="22" />
+  <rect x="8.2" y="5" width="18.8" height="3.2" />
+  <rect x="12" y="14.4" width="12" height="3.2" />
+  <rect x="8.2" y="23.8" width="18.8" height="3.2" />
+</svg>

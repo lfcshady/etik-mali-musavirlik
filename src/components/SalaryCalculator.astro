@@ -1,0 +1,294 @@
+---
+import { activeRates } from '../data/rates';
+
+const minWage = activeRates.minWageGross.toLocaleString('tr-TR', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+---
+
+<div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+  <!-- Inputs -->
+  <form id="pr-form" class="lg:col-span-5" novalidate>
+    <fieldset class="border-t border-line pt-6">
+      <legend class="sr-only">Hesaplama yönü</legend>
+      <p class="eyebrow">Hesaplama yönü</p>
+      <div class="mt-4 grid grid-cols-2 border border-line" role="group">
+        <label class="relative cursor-pointer">
+          <input type="radio" name="mode" value="gross" checked class="peer sr-only" />
+          <span
+            class="block px-4 py-3 text-center text-[0.9375rem] transition-colors duration-300 peer-checked:bg-accent peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-accent"
+            >Brütten nete</span
+          >
+        </label>
+        <label class="relative cursor-pointer border-l border-line">
+          <input type="radio" name="mode" value="net" class="peer sr-only" />
+          <span
+            class="block px-4 py-3 text-center text-[0.9375rem] transition-colors duration-300 peer-checked:bg-accent peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-accent"
+            >Netten brüte</span
+          >
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="mt-8 border-t border-line pt-6">
+      <label for="pr-amount" class="eyebrow" id="pr-amount-label">Aylık brüt ücret (TL)</label>
+      <div class="mt-3 flex items-baseline gap-3 border-b border-ink pb-2">
+        <input
+          id="pr-amount"
+          name="amount"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          value="60.000"
+          class="w-full bg-transparent font-display text-[2.5rem] leading-none tnum outline-none placeholder:text-muted md:text-[3rem]"
+        />
+        <span class="font-display text-[1.5rem] text-muted">₺</span>
+      </div>
+      <p class="mt-3 text-[0.8125rem] text-muted">
+        {activeRates.year} asgari ücret brütü {minWage} ₺. Daha düşük bir tutar girildiğinde hesap
+        yine yapılır, ancak yasal olarak asgari ücretin altında ödeme yapılamaz.
+      </p>
+    </div>
+
+    <div class="mt-8 space-y-3 border-t border-line pt-6">
+      <p class="eyebrow">Uygulanacak istisnalar</p>
+      <label class="flex cursor-pointer items-start gap-3 py-1.5">
+        <input
+          type="checkbox"
+          name="exemption"
+          checked
+          class="mt-1 h-4 w-4 shrink-0 accent-[--color-accent]"
+        />
+        <span class="text-[0.9375rem] leading-snug"
+          >Asgari ücret gelir ve damga vergisi istisnası
+          <span class="block text-[0.8125rem] text-muted"
+            >Ücretlilerin tamamına uygulanır; olağan durumda işaretli kalmalıdır.</span
+          ></span
+        >
+      </label>
+      <label class="flex cursor-pointer items-start gap-3 py-1.5">
+        <input type="checkbox" name="discount" class="mt-1 h-4 w-4 shrink-0 accent-[--color-accent]" />
+        <span class="text-[0.9375rem] leading-snug"
+          >İşveren 5 puanlık SGK prim indirimi
+          <span class="block text-[0.8125rem] text-muted"
+            >5510 sayılı Kanun kapsamındaki işverenler için işveren maliyetini düşürür.</span
+          ></span
+        >
+      </label>
+    </div>
+  </form>
+
+  <!-- Results -->
+  <div class="lg:col-span-7">
+    <div class="border border-line bg-card p-6 md:p-8">
+      <div class="flex items-baseline justify-between gap-4">
+        <p class="eyebrow">Ocak ayı sonucu</p>
+        <p class="eyebrow tnum">{activeRates.year} parametreleri</p>
+      </div>
+
+      <div class="mt-6 grid gap-6 sm:grid-cols-3">
+        <div>
+          <p class="eyebrow">Net ele geçen</p>
+          <p class="mt-2 font-display text-[2rem] leading-none text-accent tnum md:text-[2.5rem]">
+            <span id="r-net">—</span>
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Brüt ücret</p>
+          <p class="mt-2 font-display text-[2rem] leading-none tnum md:text-[2.5rem]">
+            <span id="r-gross">—</span>
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">İşverene maliyeti</p>
+          <p class="mt-2 font-display text-[2rem] leading-none tnum md:text-[2.5rem]">
+            <span id="r-cost">—</span>
+          </p>
+        </div>
+      </div>
+
+      <dl class="mt-8 divide-y divide-line border-t border-line text-[0.9375rem]">
+        <div class="flex justify-between gap-4 py-2.5">
+          <dt class="text-ink-2">SGK işçi payı (%14)</dt>
+          <dd class="tnum" id="r-sgk">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 py-2.5">
+          <dt class="text-ink-2">İşsizlik sigortası işçi payı (%1)</dt>
+          <dd class="tnum" id="r-unemp">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 py-2.5">
+          <dt class="text-ink-2">Gelir vergisi matrahı</dt>
+          <dd class="tnum" id="r-base">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 py-2.5">
+          <dt class="text-ink-2">Gelir vergisi <span id="r-rate" class="text-muted"></span></dt>
+          <dd class="tnum" id="r-tax">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 py-2.5">
+          <dt class="text-ink-2">Asgari ücret gelir vergisi istisnası</dt>
+          <dd class="tnum text-accent" id="r-exempt">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 py-2.5">
+          <dt class="text-ink-2">Damga vergisi (binde 7,59, istisna sonrası)</dt>
+          <dd class="tnum" id="r-stamp">—</dd>
+        </div>
+      </dl>
+    </div>
+
+    <p class="mt-5 text-[0.875rem] leading-relaxed text-muted">
+      <strong class="font-medium text-ink-2">Yıl içinde net ücret düşer.</strong> Gelir vergisi kümülatif
+      matrah üzerinden hesaplandığı için, üst dilime geçildiği ay ele geçen tutar azalır. Aşağıdaki tablo
+      12 ayın tamamını gösterir.
+    </p>
+  </div>
+</div>
+
+<!-- 12-month table -->
+<div class="mt-14">
+  <div class="flex flex-wrap items-baseline justify-between gap-4">
+    <h3 class="font-display text-[1.75rem]">Yıllık döküm</h3>
+    <p class="eyebrow">Aynı brüt ücretin 12 ay boyunca izlediği seyir</p>
+  </div>
+
+  <div class="mt-6 overflow-x-auto border-t border-line">
+    <table class="w-full min-w-[46rem] text-[0.875rem]">
+      <caption class="sr-only">Aylık bordro dökümü</caption>
+      <thead>
+        <tr class="border-b border-line text-left">
+          <th scope="col" class="py-3 pr-4 font-normal eyebrow">Ay</th>
+          <th scope="col" class="py-3 pr-4 text-right font-normal eyebrow">Brüt</th>
+          <th scope="col" class="py-3 pr-4 text-right font-normal eyebrow">SGK + İşsizlik</th>
+          <th scope="col" class="py-3 pr-4 text-right font-normal eyebrow">Kümülatif matrah</th>
+          <th scope="col" class="py-3 pr-4 text-right font-normal eyebrow">Dilim</th>
+          <th scope="col" class="py-3 pr-4 text-right font-normal eyebrow">Gelir v.</th>
+          <th scope="col" class="py-3 pr-4 text-right font-normal eyebrow">Damga v.</th>
+          <th scope="col" class="py-3 text-right font-normal eyebrow">Net</th>
+        </tr>
+      </thead>
+      <tbody id="pr-rows" class="divide-y divide-line-soft tnum"></tbody>
+      <tfoot>
+        <tr class="border-t border-line font-medium">
+          <td class="py-3.5 pr-4">Toplam</td>
+          <td class="py-3.5 pr-4 text-right tnum" id="t-gross">—</td>
+          <td class="py-3.5 pr-4 text-right tnum" id="t-sgk">—</td>
+          <td class="py-3.5 pr-4"></td>
+          <td class="py-3.5 pr-4"></td>
+          <td class="py-3.5 pr-4 text-right tnum" id="t-tax">—</td>
+          <td class="py-3.5 pr-4 text-right tnum" id="t-stamp">—</td>
+          <td class="py-3.5 text-right tnum" id="t-net">—</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <p class="mt-6 max-w-[70ch] border-l-2 border-accent pl-4 text-[0.875rem] leading-relaxed text-muted">
+    Hesaplama {activeRates.year} yılı asgari ücret, SGK prim oranları, gelir vergisi tarifesi ve damga
+    vergisi oranı esas alınarak yapılır ve tamamen tarayıcınızda çalışır — girdiğiniz tutar hiçbir yere
+    gönderilmez. Sonuçlar <strong class="font-medium text-ink-2">bilgilendirme amaçlıdır, bağlayıcı
+    değildir.</strong> Engellilik indirimi, asgari geçim benzeri özel durumlar, eksik gün, ek ödeme ve
+    teşvikler sonucu değiştirir. Kesin bordro için büromuza danışın.
+  </p>
+</div>
+
+<script>
+  import { fromGross, fromNet, tl, monthNames } from '../lib/payroll';
+
+  const form = document.getElementById('pr-form') as HTMLFormElement | null;
+  if (form) {
+    const amount = document.getElementById('pr-amount') as HTMLInputElement;
+    const label = document.getElementById('pr-amount-label')!;
+    const rows = document.getElementById('pr-rows')!;
+    const set = (id: string, value: string) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+
+    /**
+     * Turkish input: "60.000,50", "60.000", "60000" and "60000.50" must all work.
+     * A comma always marks the decimal, so dots are thousands separators. Without a
+     * comma, dots are thousands separators only when they group digits in threes —
+     * otherwise "60.5" would silently become 605.
+     */
+    const parse = (raw: string): number => {
+      const cleaned = raw.replace(/[^\d.,]/g, '');
+      let normalised: string;
+      if (cleaned.includes(',')) {
+        normalised = cleaned.replace(/\./g, '').replace(',', '.');
+      } else if (/^\d{1,3}(\.\d{3})+$/.test(cleaned)) {
+        normalised = cleaned.replace(/\./g, '');
+      } else {
+        normalised = cleaned;
+      }
+      const value = Number(normalised);
+      return Number.isFinite(value) ? value : 0;
+    };
+
+    const render = () => {
+      const data = new FormData(form);
+      const mode = data.get('mode') as string;
+      const opts = {
+        applyMinWageExemption: data.get('exemption') === 'on',
+        employerDiscount: data.get('discount') === 'on',
+      };
+      label.textContent =
+        mode === 'net' ? 'Aylık net ücret (TL)' : 'Aylık brüt ücret (TL)';
+
+      const value = parse(amount.value);
+      if (value <= 0) return;
+
+      const result = mode === 'net' ? fromNet(value, opts) : fromGross(value, opts);
+      const jan = result.months[0];
+
+      set('r-net', tl(jan.net));
+      set('r-gross', tl(jan.gross));
+      set('r-cost', tl(jan.employerCost));
+      set('r-sgk', tl(jan.sgkEmployee));
+      set('r-unemp', tl(jan.unemploymentEmployee));
+      set('r-base', tl(jan.taxBase));
+      set('r-tax', tl(jan.incomeTaxRaw));
+      set('r-rate', `(%${(jan.marginalRate * 100).toFixed(0)})`);
+      set('r-exempt', jan.incomeTaxExemption > 0 ? `− ${tl(jan.incomeTaxExemption)}` : '—');
+      set('r-stamp', tl(jan.stampDuty));
+
+      rows.innerHTML = result.months
+        .map((m) => {
+          const cells = [
+            monthNames[m.month - 1],
+            tl(m.gross),
+            tl(m.sgkEmployee + m.unemploymentEmployee),
+            tl(m.cumulativeBase),
+            `%${(m.marginalRate * 100).toFixed(0)}`,
+            tl(m.incomeTax),
+            tl(m.stampDuty),
+            tl(m.net),
+          ];
+          return `<tr><th scope="row" class="py-2.5 pr-4 text-left font-normal">${cells[0]}</th>${cells
+            .slice(1)
+            .map(
+              (c, i) =>
+                `<td class="py-2.5 ${i === 6 ? '' : 'pr-4'} text-right${i === 6 ? ' font-medium' : ''}">${c}</td>`,
+            )
+            .join('')}</tr>`;
+        })
+        .join('');
+
+      set('t-gross', tl(result.totals.gross));
+      set('t-sgk', tl(result.totals.sgkEmployee + result.totals.unemploymentEmployee));
+      set('t-tax', tl(result.totals.incomeTax));
+      set('t-stamp', tl(result.totals.stampDuty));
+      set('t-net', tl(result.totals.net));
+    };
+
+    form.addEventListener('input', render);
+    form.addEventListener('submit', (e) => e.preventDefault());
+
+    // Reformat to Turkish thousands separators once the field loses focus.
+    amount.addEventListener('blur', () => {
+      const value = parse(amount.value);
+      if (value > 0) amount.value = value.toLocaleString('tr-TR');
+    });
+
+    render();
+  }
+</script>

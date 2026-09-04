@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://etikmusavirlik.com.tr/sitemap-index.xml
