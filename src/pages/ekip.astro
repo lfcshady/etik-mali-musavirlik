@@ -8,16 +8,19 @@ import headerImg from '../assets/brick-up.jpg';
 
 <Base
   title="Ekip"
-  description="Etik Mali Müşavirlik ekibi: kurucu ortak, ortak, kıdemli muhasebe uzmanı ve bordro uzmanı. Dosyanızı kimin yürüttüğünü bilirsiniz."
+  description="Etik Mali Müşavirlik ekibi. Dosyanızı kimin yürüttüğünü bilirsiniz."
   path="/ekip"
 >
   <PageHeader
     eyebrow="Ekip"
     title="Dosyanızı kimin yürüttüğünü bilirsiniz."
-    lead="Dört kişilik bir büroda muhatap belirsizliği olmaz. Her mükellefin dosyası en az bir ortak tarafından bilinir."
+    lead="Küçük bir büroda muhatap belirsizliği olmaz. Her mükellefin dosyası kurucu ortak tarafından bilinir."
     meta={[
       { label: 'Ekip', value: `${team.length} kişi` },
-      { label: 'Ruhsatlı meslek mensubu', value: '2 SMMM' },
+      {
+        label: 'Ruhsatlı meslek mensubu',
+        value: `${team.filter((m) => m.title.includes('SMMM')).length} SMMM`,
+      },
     ]}
     image={headerImg}
     imageAlt="Aşağıdan yukarı bakan açıyla tuğla cepheli bina"
