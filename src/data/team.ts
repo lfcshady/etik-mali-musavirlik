@@ -15,7 +15,7 @@ export const team: Member[] = [
   {
     name: 'Ali Doğan',
     title: 'Kurucu · SMMM',
-    since: 2003,
+    since: 2019,
     focus: ['Muhasebe ve vergi danışmanlığı', 'Şirket yapılandırma', 'Mükellef temsili'],
     bio: '1988’de Fatih Ticaret Lisesi stajyeri olarak Şişli’de başladığı meslek hayatına aynı yerde dokuz yıl devam etti. Askerliğinin ardından sırasıyla turizm ve sanayi sektörlerinde muhasebe müdürü olarak görev yaptı. 2003’ün Ocak ayında kendi ofisini kurdu; 2019’da bu birikimi kurumsal bir yapıya taşıyarak Etik SM Mali Müşavirlik A.Ş.’yi kurdu.',
   },

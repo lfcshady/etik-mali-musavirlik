@@ -3,10 +3,10 @@
 // phone number or an address in a component.
 //
 // ⚠️ TASLAK BUILD. Ofisten gelen gerçek özgeçmiş belgesiyle birlikte isim, adres, e-posta,
-// çalışma saatleri ve sabit hat/cep telefonu gerçek bilgilerle dolduruldu. Hâlâ eksik/teyit
-// bekleyen alanlar aşağıda ve /taslak sayfasında işaretli: alan adı, sabit hat hane sayısı,
-// posta kodu, WhatsApp hattı, harita pin'i, sosyal medya hesapları, oda sicil/ruhsat no,
-// vergi no, MERSİS. `taslak: false` yapmadan önce hepsi netleşmeli.
+// çalışma saatleri, telefon/WhatsApp ve kuruluş yılı gerçek bilgilerle dolduruldu. Hâlâ
+// eksik/teyit bekleyen alanlar aşağıda ve /taslak sayfasında işaretli: alan adı (henüz
+// satın alınmadı), harita pin'i, sosyal medya hesapları, oda sicil/ruhsat no, vergi no,
+// MERSİS. `taslak: false` yapmadan önce hepsi netleşmeli.
 
 /** Drives the draft bar, the /taslak page, and the noindex meta. */
 export const taslak = true;
@@ -16,21 +16,17 @@ export const site = {
   shortName: 'Etik',
   legalName: 'Etik SM Mali Müşavirlik A.Ş.',
   tagline: 'Serbest Muhasebeci Mali Müşavirlik Bürosu',
-  // Ofisin e-posta alan adından çıkarıldı (alidogan@etikmalimusavirlik.org) — teyit gerekir.
-  domain: 'https://etikmalimusavirlik.org',
-  // Ali Doğan kendi ofisini 2003'te kurdu; Etik SM Mali Müşavirlik A.Ş. 2019'da kuruldu.
-  // Hangi yılın "kuruluş" olarak gösterileceği ofisle teyitlenmeli, şimdilik 2003 kullanıldı.
-  foundedYear: 2003,
+  // Alan adı henüz satın alınmadı — netleşene kadar taslak placeholder kullanılıyor.
+  domain: 'https://ornekfirma.com', // taslak placeholder domain
+  // "Kuruluş" olarak Etik SM Mali Müşavirlik A.Ş.'nin kurulduğu yıl kullanılıyor.
+  foundedYear: 2019,
   chamber: 'İstanbul SMMM Odası',
   // No oda sicil / ruhsat number anywhere: Class C, never invented. Client supplies it.
 
-  // Belgede "Tel: 0212 225 66 661" yazıyor — bu 12 hane (standart sabit hat 11 hane).
-  // Muhtemelen yazım hatası; ofisten doğru numarayı teyit edip düzeltmek gerekir.
-  phone: '+902122256661',
-  phoneDisplay: '0212 225 66 661',
+  phone: '+902122256666',
+  phoneDisplay: '0212 225 66 66',
   phoneAlt: '+905077686810',
   phoneAltDisplay: '0507 768 68 10',
-  // WhatsApp hattı belgede belirtilmedi — Gsm numarasıyla aynı varsayıldı, teyit gerekir.
   whatsapp: '905077686810',
   whatsappDisplay: '0507 768 68 10',
   email: 'alidogan@etikmalimusavirlik.org',
@@ -39,8 +35,8 @@ export const site = {
     street: '19 Mayıs Mah. Büyükdere Cad. No:8 Güzel Abant Apt D:4',
     locality: 'Şişli',
     region: 'İstanbul',
-    // Belgede posta kodu verilmedi — ofisten teyit gerekir.
-    postalCode: '',
+    // Belgede posta kodu yoktu; PTT mahalle bazlı kod internetten alındı (19 Mayıs Mah., Şişli).
+    postalCode: '34363',
     country: 'TR',
   },
 
